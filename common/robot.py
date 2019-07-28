@@ -1,0 +1,133 @@
+# -*- coding: utf-8 -*-
+
+from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, Motor
+from ev3dev2.sensor.lego import TouchSensor, ColorSensor, UltrasonicSensor, GyroSensor, InfraredSensor, SoundSensor, LightSensor, Sensor
+import logging
+import time
+
+class Robot:
+
+    # Default robot speed
+    DEFAULT_SPEED = 600
+    # default sleep timeout in sec
+    DEFAULT_SLEEP_TIMEOUT_IN_SEC = 0.1
+    # default threshold distance
+    DEFAULT_THRESHOLD_DISTANCE = 150
+
+    def __init__(self):
+
+        logging.debug("Setting up...")
+
+        # setting up base motors
+        right_motor = LargeMotor(OUTPUT_A)
+        logging.info("Right motor on OUTPUT_A : %s" % str(right_motor.address))
+
+        left_motor = LargeMotor(OUTPUT_B)
+        logging.info("Left motor on OUTPUT_B: %s" % str(left_motor.address))
+
+        right_motor.reset()
+        left_motor.reset()
+        logging.info("motor reset done")
+        self.motors = [left_motor, right_motor]
+
+        self.right_motor = right_motor
+        self.left_motor = left_motor
+
+        # Setting up sensors
+        try:
+            gyro_sensor = GyroSensor()
+            logging.info("gyro sensor connected: %s" % str(gyro_sensor.address))
+            gyro_sensor.mode = 'GYRO-ANG'
+            self.gyro_sensor = gyro_sensor
+        except Exception as e:
+            logging.exception("Gyro sensor not connected")
+
+        try:
+            color_sensor = ColorSensor()
+            logging.info("color sensor connected: %s" % str(color_sensor.address))
+            color_sensor.mode = 'COL-REFLECT'
+            self.color_sensor = color_sensor
+        except Exception as e:
+            logging.exception("Color sensor not connected")
+
+        try:
+            ultrasonic_sensor = UltrasonicSensor()
+            logging.info("ultrasonic sensor connected: %s" % str(ultrasonic_sensor.address))
+            ultrasonic_sensor.mode = 'US-DIST-CM'
+            self.ultrasonic_sensor = ultrasonic_sensor
+        except Exception as e:
+            logging.exception("Ultrasonic sensor not connected")
+
+        try:
+            ir_sensor = InfraredSensor()
+            logging.info("ir sensor connected: %s" % str(ir_sensor.address))
+            ir_sensor.mode = 'IR-REMOTE'
+            self.ir_sensor = ir_sensor
+        except Exception as e:
+            logging.exception("IR sensor not connected")
+
+    def forward(self, speed=None):
+
+        if speed:
+            self.set_speed(abs(speed))
+        else:
+            self.set_speed(abs(self.DEFAULT_SPEED))
+
+        self.right_motor.run_forever()
+        self.left_motor.run_forever()
+
+    def backward(self, speed=None):
+
+        if speed:
+            self.set_speed(-abs(speed))
+        else:
+            self.set_speed(-abs(self.DEFAULT_SPEED))
+
+        self.right_motor.run_forever()
+        self.left_motor.run_forever()
+
+    def brake(self):
+        for m in self.motors:
+            m.stop()
+
+    def turn(self, right_or_left=1):
+
+        logging.debug("Turning !!")
+
+        self.set_speed(self.DEFAULT_SPEED)
+
+        self.right_motor.speed_sp *= right_or_left
+        self.left_motor.speed_sp *= -right_or_left
+        self.right_motor.run_forever()
+        self.left_motor.run_forever()
+
+    def set_speed(self, speed):
+        self.right_motor.speed_sp = speed
+        self.left_motor.speed_sp = -speed
+
+    def ir_remote_control(self):
+        while True:
+            time.sleep(self.DEFAULT_SLEEP_TIMEOUT_IN_SEC)
+            ir_value = self.ir_sensor.value()
+            #logging.debug('ir value: %s' % str(ir_value))
+
+            if ir_value == 0:
+                self.brake()
+            elif ir_value == 1:
+                self.forward(self.DEFAULT_SPEED)
+                #logging.debug('button top left is pressed' % top_left(channel=1))
+            elif ir_value == 2:
+                self.turn(-1)
+            elif ir_value == 3:
+                self.backward(self.DEFAULT_SPEED)
+            elif ir_value == 4:
+                self.turn(1)
+            elif ir_value == 5:
+                return True
+            elif ir_value == 9:
+                self.brake()
+            if self.ultrasonic_sensor.value() < self.DEFAULT_THRESHOLD_DISTANCE:
+                logging.debug('object found: %s' % str(self.ultrasonic_sensor.value()))
+                self.brake()
+
+

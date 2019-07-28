@@ -14,7 +14,7 @@ DEFAULT_THRESHOLD_DISTANCE = 150
 
 def main():
 
-    logging.debug('Starting Clio : Run robot, run!')
+    logging.debug('Starting Muse : Run robot, run!')
     robot = Robot()
 
     try:
@@ -49,7 +49,7 @@ def main():
 
     # handle exceptions
     except Exception as e:
-        logging.exception("Clio.py file Exception !")
+        logging.exception("Muse.py file Exception !")
 
     finally:
         teardown(robot)
