@@ -13,8 +13,35 @@ class Robot:
     DEFAULT_SLEEP_TIMEOUT_IN_SEC = 0.1
     # default threshold distance
     DEFAULT_THRESHOLD_DISTANCE = 150
+    
+    # array with 8 records : one for each motor or sensor, with true/false if something is present, and a motor type/sensor type
+    
+    # add motors array
 
     def __init__(self):
+    """
+    Initializing function :
+    - set up the motors
+    - set up the sensors
+    
+    Args :
+    - self
+    
+    Returns :
+    - nothing
+    
+    Raises :
+    - Gyro sensor not detected
+    - Color sensor not detected
+    - Ultrasonic sensor not detected
+    - IR sensor not detected
+    
+    To do :
+        debug sensor detection
+        handle motor not responding or not connected
+        add turret small motor
+    
+    """
 
         logging.debug("Setting up...")
 
@@ -67,7 +94,20 @@ class Robot:
             logging.exception("IR sensor not connected")
 
     def forward(self, speed=None):
-
+    """
+    This function moves the robot forward indefinitely.
+    
+    Args :
+        self
+        speed (unit not defined for now)
+    
+    Returns :
+        nothing
+        
+    To do :
+        add unit for speed
+        handle stalled motor
+    """
         if speed:
             self.set_speed(abs(speed))
         else:
@@ -77,6 +117,19 @@ class Robot:
         self.left_motor.run_forever()
 
     def backward(self, speed=None):
+    """
+    This function moves the robot backwards indefinitely. It convert speed to a negative number.
+    
+    Args :
+        self
+        speed (unit not defined for now)
+    
+    Returns :
+        nothing
+        
+    To Do :
+        delete function (replace by forward with negative speed)
+    """
 
         if speed:
             self.set_speed(-abs(speed))
@@ -87,10 +140,27 @@ class Robot:
         self.left_motor.run_forever()
 
     def brake(self):
+    """
+    Stops all motors of the robot
+    """
         for m in self.motors:
             m.stop()
 
     def turn(self, right_or_left=1):
+    """
+    Turn the robot at default speed indefinitely
+    
+    Args :
+        self
+        right_or_left=1 turn right if positive, left if negative
+        
+    Returns :
+        nothing
+        
+    To do :
+        add speed args
+        protect right or left arg (reject other than -1 or 1)
+    """
 
         logging.debug("Turning !!")
 
@@ -102,10 +172,41 @@ class Robot:
         self.left_motor.run_forever()
 
     def set_speed(self, speed):
+    """
+    Set speed on both propulsion motors
+    
+    Args :
+        self
+        speed : integer (no unit)
+        
+    Returns :
+        nothing
+    """
         self.right_motor.speed_sp = speed
         self.left_motor.speed_sp = -speed
 
     def ir_remote_control(self):
+    """
+    Handles IR remote control inputs and moves the robot accordingly. Stops robot if ultrasonic sensor gets a value below DEFAULT_THRESHOLD_DISTANCE.
+    IR values :
+    0 -> brake
+    1 -> forward
+    2 -> turn left
+    3 -> backward
+    4 -> turn right
+    5 -> exit function
+    9 -> brake
+    
+    
+    Args :
+        self
+    
+    Returns :
+        True if IR value is 5 (exit)
+        
+    To do :
+        Handle error when ultrasonic sensor not available.
+    """
         while True:
             time.sleep(self.DEFAULT_SLEEP_TIMEOUT_IN_SEC)
             ir_value = self.ir_sensor.value()
