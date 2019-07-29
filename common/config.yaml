@@ -1,0 +1,12 @@
+Name : Clio
+A : LargeMotor
+B : LargeMotor
+C : MediumMotor
+D : FALSE
+S1 : DIST-Nx-v3
+S2 : Gyro
+S3 : Sound
+S4 : Touch
+width : 150
+height : 200
+length : 250

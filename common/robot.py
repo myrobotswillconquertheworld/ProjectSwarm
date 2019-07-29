@@ -4,6 +4,7 @@ from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, Motor
 from ev3dev2.sensor.lego import TouchSensor, ColorSensor, UltrasonicSensor, GyroSensor, InfraredSensor, SoundSensor, LightSensor, Sensor
 import logging
 import time
+import yaml
 
 class Robot:
 
@@ -14,9 +15,28 @@ class Robot:
     # default threshold distance
     DEFAULT_THRESHOLD_DISTANCE = 150
     
-    # array with 8 records : one for each motor or sensor, with true/false if something is present, and a motor type/sensor type
+    # main default empty config. Sizes are in milimeters (mm)
+    robot_config = {
+                    "Name" : None,
+                    "A" : False,
+                    "B" : False,
+                    "C" : False,
+                    "D" : False,
+                    "S1" : False,
+                    "S2" : False,
+                    "S3" : False,
+                    "S4" : False,
+                    "width" : 0,
+                    "height" : 0,
+                    "length" : 0
+                    }
+
     
-    # add motors array
+    # sensor list
+    sensorsList = [FALSE, FALSE, FALSE, FALSE]
+    
+    # motors array
+    motorsList = [FALSE, FALSE, FALSE, FALSE]
 
     def __init__(self):
     """
@@ -44,6 +64,8 @@ class Robot:
     """
 
         logging.debug("Setting up...")
+        name = self.load_config()
+        logging.debut("Load config of " % str(name))
 
         # setting up base motors
         right_motor = LargeMotor(OUTPUT_A)
@@ -92,6 +114,23 @@ class Robot:
             self.ir_sensor = ir_sensor
         except Exception as e:
             logging.exception("IR sensor not connected")
+            
+    def load_config(self):
+    """
+    Read config file and load it in class
+    
+    Args :
+        self
+        
+    Returns :
+        True
+    
+    """
+        with open('config.yaml') as f:
+        self.robot_config = yaml.load(f, Loader=yaml.FullLoader)
+        
+        return self.robot_config["Name"]
+    
 
     def forward(self, speed=None):
     """
