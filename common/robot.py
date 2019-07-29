@@ -110,7 +110,7 @@ class Robot:
             
     def load_config(self):
         """Read config file and load it in class"""
-        with open('config.yaml') as f:
+        with open('common/config.yaml') as f:
             self.robot_config = yaml.load(f, Loader=yaml.FullLoader)
         
         return self.robot_config["Name"]
