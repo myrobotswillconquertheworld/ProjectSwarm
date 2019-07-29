@@ -58,7 +58,7 @@ class Robot:
 
         logging.debug("Setting up...")
         name = self.load_config()
-        logging.debut("Load config of " % str(name))
+        logging.debug("Load config of " % str(name))
 
         # setting up base motors
         right_motor = LargeMotor(OUTPUT_A)
