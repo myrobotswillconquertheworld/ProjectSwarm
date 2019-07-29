@@ -31,13 +31,6 @@ class Robot:
                     "length" : 0
                     }
 
-    
-    # sensor list
-    sensorsList = [FALSE, FALSE, FALSE, FALSE]
-    
-    # motors array
-    motorsList = [FALSE, FALSE, FALSE, FALSE]
-
     def __init__(self):
         """
         Initializing function :
