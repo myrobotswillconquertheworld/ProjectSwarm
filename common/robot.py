@@ -60,7 +60,6 @@ class Robot:
         debug sensor detection
         handle motor not responding or not connected
         add turret small motor
-    
     """
 
         logging.debug("Setting up...")
@@ -124,7 +123,6 @@ class Robot:
         
     Returns :
         True
-    
     """
         with open('config.yaml') as f:
         self.robot_config = yaml.load(f, Loader=yaml.FullLoader)
