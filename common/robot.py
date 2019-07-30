@@ -5,6 +5,7 @@ from ev3dev2.sensor.lego import TouchSensor, ColorSensor, UltrasonicSensor, Gyro
 import logging
 import time
 import yaml
+import socket
 
 class Robot:
 
@@ -16,8 +17,8 @@ class Robot:
     DEFAULT_THRESHOLD_DISTANCE = 150
     
     # main default empty config. Sizes are in milimeters (mm)
+    robot_name = socket.gethostname()
     robot_config = {
-                    "Name" : None,
                     "A" : False,
                     "B" : False,
                     "C" : False,
@@ -38,12 +39,6 @@ class Robot:
         - set up the motors
         - set up the sensors
     
-        Args :
-            self
-        
-        Returns :
-            nothing
-    
         Raises :
             Gyro sensor not detected
             Color sensor not detected
@@ -56,9 +51,8 @@ class Robot:
             add turret small motor
         """
 
-        logging.debug("Setting up...")
         name = self.load_config()
-        #logging.debug("Load config of " % name)
+        logging.info("Load config of " % self.robot_name)
         print(name)        
 
         # setting up base motors
@@ -194,15 +188,16 @@ class Robot:
 
     def ir_remote_control(self):
         """
-        Handles IR remote control inputs and moves the robot accordingly. Stops robot if ultrasonic sensor gets a value below DEFAULT_THRESHOLD_DISTANCE.
+        Handles IR remote control inputs and moves the robot accordingly. 
+        Stops robot if ultrasonic sensor gets a value below DEFAULT_THRESHOLD_DISTANCE.
         IR values :
-        0 -> brake
-        1 -> forward
-        2 -> turn left
-        3 -> backward
-        4 -> turn right
-        5 -> exit function
-        9 -> brake
+        * 0 -> brake
+        * 1 -> forward
+        * 2 -> turn left
+        * 3 -> backward
+        * 4 -> turn right
+        * 5 -> exit function
+        * 9 -> brake
     
         Returns :
             True if IR value is 5 (exit)
@@ -213,7 +208,6 @@ class Robot:
         while True:
             time.sleep(self.DEFAULT_SLEEP_TIMEOUT_IN_SEC)
             ir_value = self.ir_sensor.value()
-            #logging.debug('ir value: %s' % str(ir_value))
 
             if ir_value == 0:
                 self.brake()
