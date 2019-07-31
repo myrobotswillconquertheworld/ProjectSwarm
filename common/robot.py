@@ -124,7 +124,7 @@ class Robot:
         """Read config file and load it in class"""
         with open('common/config.yaml') as f:
             swarm_config = yaml.load(f, Loader=yaml.FullLoader)
-            logging.info("loading config for:" % str(self.robot_name))
+            logging.info("loading config for:" % self.robot_name)
             self.robot_config = swarm_config[self.robot_name]
         
         return True
