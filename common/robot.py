@@ -33,17 +33,20 @@ class Robot:
                     }
     # this variable will contain all motor and sensor objects detected during the setup process
     robot_body = {
-                "right_motor" : False,
-                "left_motor" : False,
-                "turret_rotation" : False,
-                "turret_elevation" : False,
-                "touch_sensor" : False,
-                "sound_sensor" : False,
-                "color_sensor" :False,
-                "IR_sensor" : False,
-                "US_sensor" : False,
-                "gyro_sensor" : False,
-                "other_sensor" : False
+                    "Name" :
+                    {
+                    "right_motor" : False,
+                    "left_motor" : False,
+                    "turret_rotation" : False,
+                    "turret_elevation" : False,
+                    "touch_sensor" : False,
+                    "sound_sensor" : False,
+                    "color_sensor" :False,
+                    "IR_sensor" : False,
+                    "US_sensor" : False,
+                    "gyro_sensor" : False,
+                    "other_sensor" : False
+                    }
                 }
 
     def __init__(self):
@@ -68,7 +71,7 @@ class Robot:
 
         name = self.load_config()
         #logging.info("Load config of " % str(self.robot_name))
-        print(name)        
+        print(self.robot_config)        
 
         # setting up base motors
         try:
