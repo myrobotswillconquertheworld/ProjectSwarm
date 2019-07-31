@@ -16,7 +16,7 @@ class Robot:
     # default threshold distance
     DEFAULT_THRESHOLD_DISTANCE = 150
     
-    # main default empty config. Sizes are in milimeters (mm)
+    # main default empty config. Sizes are in milimeters (mm). Config will load from config.yaml
     robot_name = socket.gethostname()
     robot_config = {
                     "A" : False,
@@ -31,6 +31,20 @@ class Robot:
                     "height" : 0,
                     "length" : 0
                     }
+    # this variable will contain all motor and sensor objects detected during the setup process
+    robot_body = {
+                "right_motor" : False,
+                "left_motor" : False,
+                "turret_rotation" : False,
+                "turret_elevation" : False,
+                "touch_sensor" : False,
+                "sound_sensor" : False,
+                "color_sensor" :False,
+                "IR_sensor" : False,
+                "US_sensor" : False,
+                "gyro_sensor" : False,
+                "other_sensor" : False
+                }
 
     def __init__(self):
         """
@@ -38,6 +52,7 @@ class Robot:
         - load config
         - set up the motors
         - set up the sensors
+        - store motors and sensors in robot_body
     
         Raises :
             Gyro sensor not detected
@@ -56,19 +71,21 @@ class Robot:
         print(name)        
 
         # setting up base motors
-        right_motor = LargeMotor(OUTPUT_A)
-        logging.info("Right motor on OUTPUT_A : %s" % str(right_motor.address))
+        try:
+            self.robot_body["right_motor"] = LargeMotor(OUTPUT_A)
+            logging.info("Right motor on OUTPUT_A : %s" % str(self.robot_body["right_motor"].address))
+            self.robot_body["right_motor"].reset()
+        except:
+            logging.error("No Large Motor detected on Output A (right wheel)")
+        
+        try:
+            self.robot_body["left_motor"] = LargeMotor(OUTPUT_B)
+            logging.info("Left motor on OUTPUT_B: %s" % str(self.robot_body["left_motor"].address))
+            self.robot_body["left_motor"].reset()
+        except:
+            logging.error("No Large Motor detected on Output B (left wheel)")
 
-        left_motor = LargeMotor(OUTPUT_B)
-        logging.info("Left motor on OUTPUT_B: %s" % str(left_motor.address))
-
-        right_motor.reset()
-        left_motor.reset()
-        logging.info("motor reset done")
-        self.motors = [left_motor, right_motor]
-
-        self.right_motor = right_motor
-        self.left_motor = left_motor
+        logging.info("Wheels motors setup and reset done")
 
         # Setting up sensors
         try:
@@ -106,9 +123,11 @@ class Robot:
     def load_config(self):
         """Read config file and load it in class"""
         with open('common/config.yaml') as f:
-            self.robot_config = yaml.load(f, Loader=yaml.FullLoader)
+            swarm_config = yaml.load(f, Loader=yaml.FullLoader)
+            logging.info("loading config for:" % str(self.robot_name))
+            self.robot_config = swarm_config[self.robot_name]
         
-        return self.robot_config["Name"]
+        return True
     
 
     def forward(self, speed=None):
@@ -127,8 +146,8 @@ class Robot:
         else:
             self.set_speed(abs(self.DEFAULT_SPEED))
 
-        self.right_motor.run_forever()
-        self.left_motor.run_forever()
+        self.robot_body["right_motor"].run_forever()
+        self.robot_body["left_motor"].run_forever()
 
     def backward(self, speed=None):
         """
@@ -146,14 +165,14 @@ class Robot:
         else:
             self.set_speed(-abs(self.DEFAULT_SPEED))
 
-        self.right_motor.run_forever()
-        self.left_motor.run_forever()
+        self.robot_body["right_motor"].run_forever()
+        self.robot_body["left_motor"].run_forever()
 
     def brake(self):
         """Stops all motors of the robot"""
         
-        for m in self.motors:
-            m.stop()
+        self.robot_body["right_motor"].stop()
+        self.robot_body["left_motor"].stop()
 
     def turn(self, right_or_left=1):
         """
@@ -171,10 +190,10 @@ class Robot:
 
         self.set_speed(self.DEFAULT_SPEED)
 
-        self.right_motor.speed_sp *= right_or_left
-        self.left_motor.speed_sp *= -right_or_left
-        self.right_motor.run_forever()
-        self.left_motor.run_forever()
+        self.robot_body["right_motor"].speed_sp *= right_or_left
+        self.robot_body["left_motor"].speed_sp *= -right_or_left
+        self.robot_body["right_motor"].run_forever()
+        self.robot_body["left_motor"].run_forever()
 
     def set_speed(self, speed):
         """
@@ -183,8 +202,8 @@ class Robot:
         Args :
             speed : integer (no unit)
         """
-        self.right_motor.speed_sp = speed
-        self.left_motor.speed_sp = -speed
+        self.robot_body["right_motor"].speed_sp = speed
+        self.robot_body["left_motor"].speed_sp = -speed
 
     def ir_remote_control(self):
         """

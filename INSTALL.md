@@ -5,4 +5,4 @@ sudo apt-get install python3-pip
 pip3 install pyyaml 
 
 # change hostname to have best network comprehension :
-hostnamectl
+hostnamectl set-hostname 'robot_name'

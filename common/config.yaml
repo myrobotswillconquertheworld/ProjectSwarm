@@ -1,11 +1,41 @@
-A : LargeMotor
-B : LargeMotor
-C : MediumMotor
-D : FALSE
-S1 : DIST-Nx-v3
-S2 : Gyro
-S3 : Sound
-S4 : Touch
-width : 150
-height : 200
-length : 250
+# this file lists the parameters of all bots in the swarm
+# WARNING : Robot name in this file MUST BE the same as robot Hostname
+# Clio parameters
+- Name : Clio
+    A: LargeMotor, 
+    B: LargeMotor, 
+    C: MediumMotor, 
+    D: False, 
+    S1: DIST-Nx-v3,
+    S2: Gyro, 
+    S3: Sound, 
+    S4: Touch, 
+    height: 200, 
+    length: 250, 
+    width: 150
+# Erato parameters
+- Name : Erato
+    A: LargeMotor,
+    B: LargeMotor,
+    C: MediumMotor,
+    D: false,
+    S1: IRSensor,
+    S2: Compass,
+    S3: Sound, 
+    S4: Touch, 
+    height: 200, 
+    length: 250, 
+    width: 150
+# Calliope parameters
+- Name : Calliope
+    A: LargeMotor, 
+    B: false, 
+    C: MediumMotor, 
+    D: false, 
+    S1: IRSensor,
+    S2: Color, 
+    S3: Sound, 
+    S4: Touch, 
+    height: 200, 
+    length: 250, 
+    width: 150
