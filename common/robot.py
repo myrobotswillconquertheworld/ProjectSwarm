@@ -149,9 +149,12 @@ class Robot:
             self.set_speed(abs(speed))
         else:
             self.set_speed(abs(self.DEFAULT_SPEED))
-
-        self.robot_body["right_motor"].run_forever()
-        self.robot_body["left_motor"].run_forever()
+            
+        if self.robot_body["right_motor"] != False and self.robot_body["left_motor"] != False
+            self.robot_body["right_motor"].run_forever()
+            self.robot_body["left_motor"].run_forever()
+        else
+            logging.error("At least one wheel motor is unavailable. Cannot move forward.")
 
     def backward(self, speed=None):
         """
@@ -169,14 +172,24 @@ class Robot:
         else:
             self.set_speed(-abs(self.DEFAULT_SPEED))
 
-        self.robot_body["right_motor"].run_forever()
-        self.robot_body["left_motor"].run_forever()
+        if self.robot_body["right_motor"] != False and self.robot_body["left_motor"] != False
+            self.robot_body["right_motor"].run_forever()
+            self.robot_body["left_motor"].run_forever()
+        else
+            logging.error("At least one wheel motor is unavailable. Cannot move back."))
 
     def brake(self):
         """Stops all motors of the robot"""
         
-        self.robot_body["right_motor"].stop()
-        self.robot_body["left_motor"].stop()
+        if self.robot_body["right_motor"] != False 
+            self.robot_body["right_motor"].stop()
+        else
+            logging.info("No right motor available to stop")
+            
+        if self.robot_body["left_motor"] != False
+            self.robot_body["left_motor"].stop()
+        else
+            logging.error("No left motor available to stop.")
 
     def turn(self, right_or_left=1):
         """
@@ -184,11 +197,18 @@ class Robot:
     
         Args :
             right_or_left=1 turn right if positive, left if negative
+            
+        Returns :
+            False if one wheel motor is missin
+            True otherwise
         
         To do :
             add speed args
             protect right or left arg (reject other than -1 or 1)
         """
+        if self.robot_body["right_motor"] != False and self.robot_body["left_motor"] != False
+            logging.error("At least olne motor missing, cannot turn")
+            return False
 
         logging.debug("Turning !!")
 
@@ -198,6 +218,8 @@ class Robot:
         self.robot_body["left_motor"].speed_sp *= -right_or_left
         self.robot_body["right_motor"].run_forever()
         self.robot_body["left_motor"].run_forever()
+        
+        return True
 
     def set_speed(self, speed):
         """
@@ -205,9 +227,23 @@ class Robot:
     
         Args :
             speed : integer (no unit)
+        
+        Returns :
+            False if one wheel motor is missin
+            True otherwise   
         """
-        self.robot_body["right_motor"].speed_sp = speed
-        self.robot_body["left_motor"].speed_sp = -speed
+        if self.robot_body["right_motor"] != False
+            self.robot_body["right_motor"].speed_sp = speed
+        else
+            return False
+              
+        if self.robot_body["right_motor"] != False
+            self.robot_body["left_motor"].speed_sp = -speed
+        else
+            return False
+        
+        return True
+
 
     def ir_remote_control(self):
         """
@@ -247,8 +283,9 @@ class Robot:
                 return True
             elif ir_value == 9:
                 self.brake()
-            if self.ultrasonic_sensor.value() < self.DEFAULT_THRESHOLD_DISTANCE:
-                logging.debug('object found: %s' % str(self.ultrasonic_sensor.value()))
-                self.brake()
+            if self.robot_body["ultrasonic_sensor"] != False
+                if self.robot_body["ultrasonic_sensor"].value() < self.DEFAULT_THRESHOLD_DISTANCE:
+                    logging.debug('object found: %s' % str(self.ultrasonic_sensor.value()))
+                    self.brake()
 
 
