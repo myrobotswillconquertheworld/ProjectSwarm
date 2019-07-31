@@ -33,8 +33,6 @@ class Robot:
                     }
     # this variable will contain all motor and sensor objects detected during the setup process
     robot_body = {
-                    "Name" :
-                    {
                     "right_motor" : False,
                     "left_motor" : False,
                     "turret_rotation" : False,
@@ -46,7 +44,6 @@ class Robot:
                     "US_sensor" : False,
                     "gyro_sensor" : False,
                     "other_sensor" : False
-                    }
                 }
 
     def __init__(self):
@@ -69,9 +66,8 @@ class Robot:
             add turret small motor
         """
 
-        name = self.load_config()
-        #logging.info("Load config of " % str(self.robot_name))
-        print(self.robot_config)        
+        self.load_config()
+        logging.info("Load config of %s" % str(self.robot_name))
 
         # setting up base motors
         try:
@@ -87,39 +83,43 @@ class Robot:
             self.robot_body["left_motor"].reset()
         except:
             logging.error("No Large Motor detected on Output B (left wheel)")
+            
+        try:
+            self.robot_body["turret_rotation"] = MediumMotor(OUTPUT_C)
+            logging.info("Turret rotation motor on OUTPUT_C: %s" % str(self.robot_body["turret_rotation"].address))
+            self.robot_body["turret_rotation"].reset()
+        except:
+            logging.error("No Medium Motor detected on Output C (turret rotation)")  
+            
 
-        logging.info("Wheels motors setup and reset done")
+        logging.info("Wheels and turret motors setup and reset done")
 
         # Setting up sensors
         try:
-            gyro_sensor = GyroSensor()
-            logging.info("gyro sensor connected: %s" % str(gyro_sensor.address))
-            gyro_sensor.mode = 'GYRO-ANG'
-            self.gyro_sensor = gyro_sensor
+            self.robot_body["gyro_sensor"] = GyroSensor()
+            logging.info("gyro sensor connected: %s" % str(self.robot_body["gyro_sensor"].address))
+            self.robot_body["gyro_sensor"].mode = 'GYRO-ANG'
         except Exception as e:
             logging.exception("Gyro sensor not connected")
 
         try:
-            color_sensor = ColorSensor()
-            logging.info("color sensor connected: %s" % str(color_sensor.address))
-            color_sensor.mode = 'COL-REFLECT'
-            self.color_sensor = color_sensor
+            self.robot_body["color_sensor"] = ColorSensor()
+            logging.info("color sensor connected: %s" % str(self.robot_body["color_sensor"].address))
+            self.robot_body["color_sensor"].mode = 'COL-REFLECT'
         except Exception as e:
             logging.exception("Color sensor not connected")
 
         try:
-            ultrasonic_sensor = UltrasonicSensor()
-            logging.info("ultrasonic sensor connected: %s" % str(ultrasonic_sensor.address))
-            ultrasonic_sensor.mode = 'US-DIST-CM'
-            self.ultrasonic_sensor = ultrasonic_sensor
+            self.robot_body["ultrasonic_sensor"] = UltrasonicSensor()
+            logging.info("ultrasonic sensor connected: %s" % str(self.robot_body["ultrasonic_sensor"].address))
+            self.robot_body["ultrasonic_sensor"].mode = 'US-DIST-CM'
         except Exception as e:
             logging.exception("Ultrasonic sensor not connected")
 
         try:
-            ir_sensor = InfraredSensor()
-            logging.info("ir sensor connected: %s" % str(ir_sensor.address))
-            ir_sensor.mode = 'IR-REMOTE'
-            self.ir_sensor = ir_sensor
+            self.robot_body["ir_sensor"] = InfraredSensor()
+            logging.info("ir sensor connected: %s" % str(self.robot_body["ir_sensor"].address))
+            self.robot_body["ir_sensor"].mode = 'IR-REMOTE'
         except Exception as e:
             logging.exception("IR sensor not connected")
             
@@ -127,8 +127,7 @@ class Robot:
         """Read config file and load it in class"""
         with open('common/config.yaml') as f:
             swarm_config = yaml.load(f, Loader=yaml.FullLoader)
-            #logging.info("loading config for:" % self.robot_name)
-            print(swarm_config[0])
+            logging.info("loading config for: %s" % self.robot_name)
             self.robot_config = swarm_config[0]
             self.robot_config = self.robot_config[self.robot_name] 
         
