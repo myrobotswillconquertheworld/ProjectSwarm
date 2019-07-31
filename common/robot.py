@@ -67,7 +67,7 @@ class Robot:
         """
 
         name = self.load_config()
-        logging.info("Load config of " % self.robot_name)
+        #logging.info("Load config of " % str(self.robot_name))
         print(name)        
 
         # setting up base motors
