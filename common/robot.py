@@ -100,6 +100,7 @@ class Robot:
             logging.info("gyro sensor connected: %s" % str(self.robot_body["gyro_sensor"].address))
             self.robot_body["gyro_sensor"].mode = 'GYRO-ANG'
         except Exception as e:
+            self.robot_body["gyro_sensor"] = False
             logging.exception("Gyro sensor not connected")
 
         try:
@@ -107,6 +108,7 @@ class Robot:
             logging.info("color sensor connected: %s" % str(self.robot_body["color_sensor"].address))
             self.robot_body["color_sensor"].mode = 'COL-REFLECT'
         except Exception as e:
+            self.robot_body["color_sensor"] = False
             logging.exception("Color sensor not connected")
 
         try:
@@ -114,6 +116,7 @@ class Robot:
             logging.info("ultrasonic sensor connected: %s" % str(self.robot_body["ultrasonic_sensor"].address))
             self.robot_body["ultrasonic_sensor"].mode = 'US-DIST-CM'
         except Exception as e:
+            self.robot_body["ultrasonic_sensor"] = False
             logging.exception("Ultrasonic sensor not connected")
 
         try:
@@ -121,6 +124,7 @@ class Robot:
             logging.info("ir sensor connected: %s" % str(self.robot_body["ir_sensor"].address))
             self.robot_body["ir_sensor"].mode = 'IR-REMOTE'
         except Exception as e:
+            self.robot_body["ir_sensor"] = False
             logging.exception("IR sensor not connected")
             
     def load_config(self):
