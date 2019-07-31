@@ -125,8 +125,9 @@ class Robot:
         with open('common/config.yaml') as f:
             swarm_config = yaml.load(f, Loader=yaml.FullLoader)
             #logging.info("loading config for:" % self.robot_name)
-            print(swarm_config)
-            self.robot_config = swarm_config[self.robot_name]
+            print(swarm_config[0])
+            self.robot_config = swarm_config[0]
+            self.robot_config = self.robot_config[self.robot_name] 
         
         return True
     
