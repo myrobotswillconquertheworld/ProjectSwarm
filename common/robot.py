@@ -211,7 +211,7 @@ class Robot:
             protect right or left arg (reject other than -1 or 1)
         """
         if self.robot_body["right_motor"] != False and self.robot_body["left_motor"] != False :
-            logging.error("At least olne motor missing, cannot turn")
+            logging.error("At least one motor missing, cannot turn")
             return False
 
         logging.debug("Turning !!")
