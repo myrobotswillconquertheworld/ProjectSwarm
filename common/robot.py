@@ -304,7 +304,7 @@ class Robot:
                 
             if self.robot_body["US_sensor"] != False :
                 if self.robot_body["US_sensor"].value() < self.DEFAULT_THRESHOLD_DISTANCE:
-                    logging.debug('object found: %s' % str(self.ultrasonic_sensor.value()))
+                    logging.debug('object found: %s' % str(self.robot_body["US_sensor"].value()))
                     self.brake()
 
 
