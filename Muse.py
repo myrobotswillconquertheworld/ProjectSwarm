@@ -38,7 +38,7 @@ def main():
                 robot.ir_remote_control()
             if robot.robot_body["US_sensor"] != False :
                 if robot.ultrasonic_sensor.value() < DEFAULT_THRESHOLD_DISTANCE:
-                    logging.debug('object found: %s' % str(robot.ultrasonic_sensor.value()))
+                    logging.debug('object found: %s' % str(robot.robot_body["US_sensor"].value()))
                     robot.brake()
             if k == 'q':
                 loop = False
