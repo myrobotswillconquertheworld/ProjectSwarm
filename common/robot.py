@@ -96,8 +96,23 @@ class Robot:
 
         # Setting up sensors
         try:
+            self.robot_body["touch_sensor"] = TouchSensor()
+            logging.info("Touch sensor connected: %s" % str(self.robot_body["touch_sensor"].address))
+            #self.robot_body["touch_sensor"].mode = 
+        except Exception as e:
+            self.robot_body["touch_sensor"] = False
+            logging.exception("Touch sensor not connected")
+        try:
+            self.robot_body["sound_sensor"] = SoundSensor()
+            logging.info("Sound sensor connected: %s" % str(self.robot_body["sound_sensor"].address))
+            #self.robot_body["sound_sensor"].mode =
+        except Exception as e:
+            self.robot_body["sound_sensor"] = False
+            logging.exception("Sound sensor not connected")
+            
+        try:
             self.robot_body["gyro_sensor"] = GyroSensor()
-            logging.info("gyro sensor connected: %s" % str(self.robot_body["gyro_sensor"].address))
+            logging.info("Gyro sensor connected: %s" % str(self.robot_body["gyro_sensor"].address))
             self.robot_body["gyro_sensor"].mode = 'GYRO-ANG'
         except Exception as e:
             self.robot_body["gyro_sensor"] = False
@@ -105,7 +120,7 @@ class Robot:
 
         try:
             self.robot_body["color_sensor"] = ColorSensor()
-            logging.info("color sensor connected: %s" % str(self.robot_body["color_sensor"].address))
+            logging.info("Color sensor connected: %s" % str(self.robot_body["color_sensor"].address))
             self.robot_body["color_sensor"].mode = 'COL-REFLECT'
         except Exception as e:
             self.robot_body["color_sensor"] = False
@@ -113,7 +128,7 @@ class Robot:
 
         try:
             self.robot_body["US_sensor"] = UltrasonicSensor()
-            logging.info("ultrasonic sensor connected: %s" % str(self.robot_body["US_sensor"].address))
+            logging.info("Ultrasonic sensor connected: %s" % str(self.robot_body["US_sensor"].address))
             self.robot_body["US_sensor"].mode = 'US-DIST-CM'
         except Exception as e:
             self.robot_body["US_sensor"] = False
