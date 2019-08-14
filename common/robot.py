@@ -85,7 +85,7 @@ class Robot:
             logging.error("No Large Motor detected on Output B (left wheel)")
             
         try:
-            self.robot_body["turret_rotation"] = MediumMotor(OUTPUT_C)
+            self.robot_body["turret_rotation"] = Motor(OUTPUT_C)
             logging.info("Turret rotation motor on OUTPUT_C: %s" % str(self.robot_body["turret_rotation"].address))
             self.robot_body["turret_rotation"].reset()
         except:
@@ -150,9 +150,9 @@ class Robot:
             handle stalled motor
         """
         if speed:
-            self.set_speed(abs(speed))
+            self.set_speed(-abs(speed))
         else:
-            self.set_speed(abs(self.DEFAULT_SPEED))
+            self.set_speed(-abs(self.DEFAULT_SPEED))
             
         if self.robot_body["right_motor"] != False and self.robot_body["left_motor"] != False :
             self.robot_body["right_motor"].run_forever()
@@ -170,11 +170,10 @@ class Robot:
         To Do :
             delete function (replace by forward with negative speed)
         """
-
         if speed:
-            self.set_speed(-abs(speed))
+            self.set_speed(abs(speed))
         else:
-            self.set_speed(-abs(self.DEFAULT_SPEED))
+            self.set_speed(abs(self.DEFAULT_SPEED))
 
         if self.robot_body["right_motor"] != False and self.robot_body["left_motor"] != False :
             self.robot_body["right_motor"].run_forever()
@@ -210,7 +209,7 @@ class Robot:
             add speed args
             protect right or left arg (reject other than -1 or 1)
         """
-        if self.robot_body["right_motor"] != False or self.robot_body["left_motor"] != False :
+        if self.robot_body["right_motor"] == False or self.robot_body["left_motor"] == False :
             logging.error("At least one motor missing, cannot turn")
             return False
 
@@ -264,7 +263,12 @@ class Robot:
     
         Returns :
             True if IR value is 5 (exit)
+            False if no IR sensor
         """
+        if self.robot_body["IR_sensor"] == False :
+            logging.info("No IR sensor, remote control operation impossible.")
+            return False
+        
         while True:
             time.sleep(self.DEFAULT_SLEEP_TIMEOUT_IN_SEC)
             ir_value = self.ir_sensor.value()
