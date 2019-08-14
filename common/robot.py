@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, Motor
+from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, Motor
 from ev3dev2.sensor.lego import TouchSensor, ColorSensor, UltrasonicSensor, GyroSensor, InfraredSensor, SoundSensor, LightSensor, Sensor
 import logging
 import time
@@ -65,9 +65,9 @@ class Robot:
             handle motor not responding or not connected
             add turret small motor
         """
-
+        
+        # loading config form config.yaml file
         self.load_config()
-        logging.info("Load config of %s" % str(self.robot_name))
 
         # setting up base motors
         try:
@@ -112,19 +112,19 @@ class Robot:
             logging.exception("Color sensor not connected")
 
         try:
-            self.robot_body["ultrasonic_sensor"] = UltrasonicSensor()
-            logging.info("ultrasonic sensor connected: %s" % str(self.robot_body["ultrasonic_sensor"].address))
-            self.robot_body["ultrasonic_sensor"].mode = 'US-DIST-CM'
+            self.robot_body["US_sensor"] = UltrasonicSensor()
+            logging.info("ultrasonic sensor connected: %s" % str(self.robot_body["US_sensor"].address))
+            self.robot_body["US_sensor"].mode = 'US-DIST-CM'
         except Exception as e:
-            self.robot_body["ultrasonic_sensor"] = False
+            self.robot_body["US_sensor"] = False
             logging.exception("Ultrasonic sensor not connected")
 
         try:
-            self.robot_body["ir_sensor"] = InfraredSensor()
-            logging.info("ir sensor connected: %s" % str(self.robot_body["ir_sensor"].address))
-            self.robot_body["ir_sensor"].mode = 'IR-REMOTE'
+            self.robot_body["IR_sensor"] = InfraredSensor()
+            logging.info("IR sensor connected: %s" % str(self.robot_body["IR_sensor"].address))
+            self.robot_body["IR_sensor"].mode = 'IR-REMOTE'
         except Exception as e:
-            self.robot_body["ir_sensor"] = False
+            self.robot_body["IR_sensor"] = False
             logging.exception("IR sensor not connected")
             
     def load_config(self):
@@ -133,7 +133,6 @@ class Robot:
             swarm_config = yaml.load(f, Loader=yaml.FullLoader)
             logging.info("loading config for: %s" % self.robot_name)
             self.robot_config = swarm_config[self.robot_name]
-            print(self.robot_config)
         
         return True
     
