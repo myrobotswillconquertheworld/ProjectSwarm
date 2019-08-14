@@ -1,7 +1,7 @@
 # this file lists the parameters of all bots in the swarm
 # WARNING : Robot name in this file MUST BE the same as robot Hostname
 # Clio parameters
-- Clio :
+Clio :
     A: LargeMotor, 
     B: LargeMotor, 
     C: MediumMotor, 
@@ -14,7 +14,7 @@
     length: 250, 
     width: 150
 # Erato parameters
-- Erato :
+Erato :
     A: LargeMotor,
     B: LargeMotor,
     C: MediumMotor,
@@ -27,7 +27,7 @@
     length: 250, 
     width: 150
 # Calliope parameters
-- Calliope :
+Calliope :
     A: LargeMotor, 
     B: false, 
     C: MediumMotor, 
