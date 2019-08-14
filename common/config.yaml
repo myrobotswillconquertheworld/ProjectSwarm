@@ -29,7 +29,7 @@ Erato :
 # Calliope parameters
 Calliope :
     A: LargeMotor, 
-    B: false, 
+    B: LargeMotor, 
     C: MediumMotor, 
     D: false, 
     S1: IRSensor,

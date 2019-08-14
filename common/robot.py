@@ -134,7 +134,6 @@ class Robot:
             logging.info("loading config for: %s" % self.robot_name)
             self.robot_config = swarm_config[self.robot_name]
             print(self.robot_config)
-            #self.robot_config = self.robot_config[self.robot_name] 
         
         return True
     
@@ -211,7 +210,7 @@ class Robot:
             add speed args
             protect right or left arg (reject other than -1 or 1)
         """
-        if self.robot_body["right_motor"] != False and self.robot_body["left_motor"] != False :
+        if self.robot_body["right_motor"] != False or self.robot_body["left_motor"] != False :
             logging.error("At least one motor missing, cannot turn")
             return False
 
@@ -234,7 +233,7 @@ class Robot:
             speed : integer (no unit)
         
         Returns :
-            False if one wheel motor is missin
+            False if one wheel motor is missing
             True otherwise   
         """
         if self.robot_body["right_motor"] != False :
@@ -243,7 +242,7 @@ class Robot:
             return False
               
         if self.robot_body["right_motor"] != False :
-            self.robot_body["left_motor"].speed_sp = -speed
+            self.robot_body["left_motor"].speed_sp = speed
         else :
             return False
         
@@ -274,7 +273,6 @@ class Robot:
                 self.brake()
             elif ir_value == 1:
                 self.forward(self.DEFAULT_SPEED)
-                #logging.debug('button top left is pressed' % top_left(channel=1))
             elif ir_value == 2:
                 self.turn(-1)
             elif ir_value == 3:
@@ -285,8 +283,9 @@ class Robot:
                 return True
             elif ir_value == 9:
                 self.brake()
-            if self.robot_body["ultrasonic_sensor"] != False :
-                if self.robot_body["ultrasonic_sensor"].value() < self.DEFAULT_THRESHOLD_DISTANCE:
+                
+            if self.robot_body["US_sensor"] != False :
+                if self.robot_body["US_sensor"].value() < self.DEFAULT_THRESHOLD_DISTANCE:
                     logging.debug('object found: %s' % str(self.ultrasonic_sensor.value()))
                     self.brake()
 
