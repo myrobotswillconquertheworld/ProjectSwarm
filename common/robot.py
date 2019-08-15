@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, Motor
+from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D, Motor
 from ev3dev2.sensor.lego import TouchSensor, ColorSensor, UltrasonicSensor, GyroSensor, InfraredSensor, SoundSensor, LightSensor, Sensor
 import logging
 import time
@@ -10,7 +10,7 @@ import socket
 class Robot:
 
     # Default robot speed
-    DEFAULT_SPEED = 600
+    DEFAULT_SPEED = 400
     # default sleep timeout in sec
     DEFAULT_SLEEP_TIMEOUT_IN_SEC = 0.1
     # default threshold distance
@@ -19,17 +19,10 @@ class Robot:
     # main default empty config. Sizes are in milimeters (mm). Config will load from config.yaml
     robot_name = socket.gethostname()
     robot_config = {
-                    "A" : False,
-                    "B" : False,
-                    "C" : False,
-                    "D" : False,
-                    "S1" : False,
-                    "S2" : False,
-                    "S3" : False,
-                    "S4" : False,
-                    "width" : 0,
-                    "height" : 0,
-                    "length" : 0
+                    "motors" : {"A" : False, "B" : False, "C" : False, "D" : False},
+                    "sensors" : {"S1" : False, "S2" : False, "S3" : False, "S4" : False},
+                    "dimensions" : {"wheel_diameter" : 0, "wheel_spacing" : 0},
+                    "parameters" : {"default_speed": 400, "threshold_distance": 100}
                     }
     # this variable will contain all motor and sensor objects detected during the setup process
     robot_body = {
@@ -52,13 +45,12 @@ class Robot:
         - load config
         - set up the motors
         - set up the sensors
-        - store motors and sensors in robot_body
+        - store motors and sensors configuration in robot_body
     
         Raises :
-            Gyro sensor not detected
-            Color sensor not detected
-            Ultrasonic sensor not detected
-            IR sensor not detected
+            Config error
+            Motor error
+            Sensor error
         
         To do :
             debug sensor detection
@@ -68,7 +60,81 @@ class Robot:
         
         # loading config form config.yaml file
         self.load_config()
+        logging.info(">>> Config loaded for: %s" % self.robot_name % "<<<")
+            
+        self.setup_motors()
+        logging.info(">>> Motors config done <<<")
+            
+        self.setup_sensors()
+        logging.info(">>> Sensors setup done <<<")
+            
+    def load_config(self):
+        """Read config file and load it in class"""
+        with open('common/config.yaml') as f:
+            swarm_config = yaml.load(f, Loader=yaml.FullLoader)
+            self.robot_config = swarm_config[self.robot_name]
+        
+        return True
+        
+    def setup_sensors(self):
+        """During startup setup all sensors of the robot based on the given config.yaml"""
+        
+        #if self.robot_body().has_key("")
+        #list(mydict.keys())[list(mydict.values()).index(1)]
+        
+        # Setting up sensors
+        try:
+            self.robot_body["touch_sensor"] = TouchSensor()
+            logging.info("Touch sensor connected: %s" % str(self.robot_body["touch_sensor"].address))
+            #self.robot_body["touch_sensor"].mode = 
+        except:
+            self.robot_body["touch_sensor"] = False
+            logging.exception("Touch sensor not connected")
+        try:
+            self.robot_body["sound_sensor"] = SoundSensor()
+            logging.info("Sound sensor connected: %s" % str(self.robot_body["sound_sensor"].address))
+            #self.robot_body["sound_sensor"].mode =
+        except:
+            self.robot_body["sound_sensor"] = False
+            logging.exception("Sound sensor not connected")
+            
+        try:
+            self.robot_body["gyro_sensor"] = GyroSensor()
+            logging.info("Gyro sensor connected: %s" % str(self.robot_body["gyro_sensor"].address))
+            self.robot_body["gyro_sensor"].mode = 'GYRO-ANG'
+        except:
+            self.robot_body["gyro_sensor"] = False
+            logging.exception("Gyro sensor not connected")
 
+        try:
+            self.robot_body["color_sensor"] = ColorSensor()
+            logging.info("Color sensor connected: %s" % str(self.robot_body["color_sensor"].address))
+            self.robot_body["color_sensor"].mode = 'COL-REFLECT'
+        except:
+            self.robot_body["color_sensor"] = False
+            logging.exception("Color sensor not connected")
+
+        try:
+            self.robot_body["US_sensor"] = UltrasonicSensor()
+            logging.info("Ultrasonic sensor connected: %s" % str(self.robot_body["US_sensor"].address))
+            self.robot_body["US_sensor"].mode = 'US-DIST-CM'
+        except:
+            self.robot_body["US_sensor"] = False
+            logging.exception("Ultrasonic sensor not connected")
+
+        try:
+            self.robot_body["IR_sensor"] = InfraredSensor()
+            logging.info("IR sensor connected: %s" % str(self.robot_body["IR_sensor"].address))
+            self.robot_body["IR_sensor"].mode = 'IR-REMOTE'
+        except:
+            self.robot_body["IR_sensor"] = False
+            logging.exception("IR sensor not connected")
+        
+        return True
+        
+    def setup_motors(self):
+        """ Setup 2 wheel motors and 2 turret motors"""
+        
         # setting up base motors
         try:
             self.robot_body["right_motor"] = LargeMotor(OUTPUT_A)
@@ -84,6 +150,7 @@ class Robot:
         except:
             logging.error("No Large Motor detected on Output B (left wheel)")
             
+        # setting up turret motors
         try:
             self.robot_body["turret_rotation"] = Motor(OUTPUT_C)
             logging.info("Turret rotation motor on OUTPUT_C: %s" % str(self.robot_body["turret_rotation"].address))
@@ -91,63 +158,12 @@ class Robot:
         except:
             logging.error("No Medium Motor detected on Output C (turret rotation)")  
             
-
-        logging.info("Wheels and turret motors setup and reset done")
-
-        # Setting up sensors
         try:
-            self.robot_body["touch_sensor"] = TouchSensor()
-            logging.info("Touch sensor connected: %s" % str(self.robot_body["touch_sensor"].address))
-            #self.robot_body["touch_sensor"].mode = 
-        except Exception as e:
-            self.robot_body["touch_sensor"] = False
-            logging.exception("Touch sensor not connected")
-        try:
-            self.robot_body["sound_sensor"] = SoundSensor()
-            logging.info("Sound sensor connected: %s" % str(self.robot_body["sound_sensor"].address))
-            #self.robot_body["sound_sensor"].mode =
-        except Exception as e:
-            self.robot_body["sound_sensor"] = False
-            logging.exception("Sound sensor not connected")
-            
-        try:
-            self.robot_body["gyro_sensor"] = GyroSensor()
-            logging.info("Gyro sensor connected: %s" % str(self.robot_body["gyro_sensor"].address))
-            self.robot_body["gyro_sensor"].mode = 'GYRO-ANG'
-        except Exception as e:
-            self.robot_body["gyro_sensor"] = False
-            logging.exception("Gyro sensor not connected")
-
-        try:
-            self.robot_body["color_sensor"] = ColorSensor()
-            logging.info("Color sensor connected: %s" % str(self.robot_body["color_sensor"].address))
-            self.robot_body["color_sensor"].mode = 'COL-REFLECT'
-        except Exception as e:
-            self.robot_body["color_sensor"] = False
-            logging.exception("Color sensor not connected")
-
-        try:
-            self.robot_body["US_sensor"] = UltrasonicSensor()
-            logging.info("Ultrasonic sensor connected: %s" % str(self.robot_body["US_sensor"].address))
-            self.robot_body["US_sensor"].mode = 'US-DIST-CM'
-        except Exception as e:
-            self.robot_body["US_sensor"] = False
-            logging.exception("Ultrasonic sensor not connected")
-
-        try:
-            self.robot_body["IR_sensor"] = InfraredSensor()
-            logging.info("IR sensor connected: %s" % str(self.robot_body["IR_sensor"].address))
-            self.robot_body["IR_sensor"].mode = 'IR-REMOTE'
-        except Exception as e:
-            self.robot_body["IR_sensor"] = False
-            logging.exception("IR sensor not connected")
-            
-    def load_config(self):
-        """Read config file and load it in class"""
-        with open('common/config.yaml') as f:
-            swarm_config = yaml.load(f, Loader=yaml.FullLoader)
-            logging.info("loading config for: %s" % self.robot_name)
-            self.robot_config = swarm_config[self.robot_name]
+            self.robot_body["turret_elevation"] = Motor(OUTPUT_D)
+            logging.info("Turret elevation motor on OUTPUT_D: %s" % str(self.robot_body["turret_elevation"].address))
+            self.robot_body["turret_elevation"].reset()
+        except:
+            logging.error("No Medium Motor detected on Output D (turret elevation)") 
         
         return True
     
