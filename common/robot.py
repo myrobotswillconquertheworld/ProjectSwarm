@@ -77,7 +77,7 @@ class Robot:
         
         #if self.robot_body().has_key("")
         for inx, sensor in self.robot_config["sensors"].items():
-            if sensor == "touch_sensor":
+            if sensor == "Touch_sensor":
                 try:
                     self.robot_body["touch_sensor"] = TouchSensor()
                     logging.info("Touch sensor connected:" + str(self.robot_body["touch_sensor"].address)) 
@@ -85,7 +85,7 @@ class Robot:
                     self.robot_body["touch_sensor"] = False
                     logging.exception("Touch sensor not connected")
                     
-            elif sensor == "sound_sensor":
+            elif sensor == "Sound_sensor":
                 try:
                     self.robot_body["sound_sensor"] = SoundSensor()
                     logging.info("Sound sensor connected: %s" % str(self.robot_body["sound_sensor"].address))
@@ -93,7 +93,7 @@ class Robot:
                     self.robot_body["sound_sensor"] = False
                     logging.exception("Sound sensor not connected")
                     
-            elif sensor == "gyro_sensor":
+            elif sensor == "Gyro_sensor":
                 try:
                     self.robot_body["gyro_sensor"] = GyroSensor()
                     logging.info("Gyro sensor connected: %s" % str(self.robot_body["gyro_sensor"].address))
@@ -102,7 +102,7 @@ class Robot:
                     self.robot_body["gyro_sensor"] = False
                     logging.exception("Gyro sensor not connected")
                     
-            elif sensor == "color_sensor":
+            elif sensor == "Color_sensor":
                 try:
                     self.robot_body["color_sensor"] = ColorSensor()
                     logging.info("Color sensor connected: %s" % str(self.robot_body["color_sensor"].address))
@@ -129,8 +129,14 @@ class Robot:
                     self.robot_body["IR_sensor"] = False
                     logging.exception("IR sensor not connected")
                     
+            elif sensor == "DIST-Nx-v3":
+                logging.info("DIST-Nx-v3 sensor not supported yet")
+                
+            elif sensor == "Compass_sensor":
+                logging.info("Compass sensor not supported yet")
+                    
             else:
-                logging.error("Unknown sensor / not supported on input" + str(inx))
+                logging.error("Unknown sensor / not supported on input : " + str(inx))
         
         return True
         
