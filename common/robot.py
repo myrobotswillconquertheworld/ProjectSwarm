@@ -182,7 +182,7 @@ class Robot:
         if speed:
             self.set_speed(-abs(speed))
         else:
-            self.set_speed(-abs(self.DEFAULT_SPEED))
+            self.set_speed(-abs(self.robot_body["parameters"]["default_speed"]))
             
         if self.robot_body["right_motor"] != False and self.robot_body["left_motor"] != False :
             self.robot_body["right_motor"].run_forever()
@@ -203,7 +203,7 @@ class Robot:
         if speed:
             self.set_speed(abs(speed))
         else:
-            self.set_speed(abs(self.DEFAULT_SPEED))
+            self.set_speed(abs(self.robot_body["parameters"]["default_speed"]))
 
         if self.robot_body["right_motor"] != False and self.robot_body["left_motor"] != False :
             self.robot_body["right_motor"].run_forever()
@@ -245,7 +245,7 @@ class Robot:
 
         logging.debug("Turning !!")
 
-        self.set_speed(self.DEFAULT_SPEED)
+        self.set_speed(self.robot_body["parameters"]["default_speed"])
 
         self.robot_body["right_motor"].speed_sp *= right_or_left
         self.robot_body["left_motor"].speed_sp *= -right_or_left
@@ -306,11 +306,11 @@ class Robot:
             if ir_value == 0:
                 self.brake()
             elif ir_value == 1:
-                self.forward(self.DEFAULT_SPEED)
+                self.forward()
             elif ir_value == 2:
                 self.turn(-1)
             elif ir_value == 3:
-                self.backward(self.DEFAULT_SPEED)
+                self.backward()
             elif ir_value == 4:
                 self.turn(1)
             elif ir_value == 5:
