@@ -78,9 +78,9 @@ class Robot:
         #if self.robot_body().has_key("")
         for inx, sensor in self.robot_config["sensors"].items():
             if sensor == "touch_sensor":
-               try:
+                try:
                     self.robot_body["touch_sensor"] = TouchSensor()
-                    logging.info("Touch sensor connected: %s" % str(self.robot_body["touch_sensor"].address)) 
+                    logging.info("Touch sensor connected:" + str(self.robot_body["touch_sensor"].address)) 
                 except:
                     self.robot_body["touch_sensor"] = False
                     logging.exception("Touch sensor not connected")str(self.robot_body["touch_sensor"].address))
