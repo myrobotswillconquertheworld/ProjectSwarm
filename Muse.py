@@ -34,7 +34,7 @@ def main():
             if k == 'i':
                 robot.ir_remote_control()
             if robot.robot_body["US_sensor"] != False :
-                if robot.robot_body["US_sensor"].value() < robot.robot_config["parameters"]["default_threshold_distance"]:
+                if robot.robot_body["US_sensor"].value() < int(robot.robot_config["parameters"]["default_threshold_distance"]):
                     logging.debug('object found: %s' % str(robot.robot_body["US_sensor"].value()))
                     robot.brake()
             if k == 'q':

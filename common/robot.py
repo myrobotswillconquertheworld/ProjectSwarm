@@ -178,7 +178,7 @@ class Robot:
         if speed:
             self.set_speed(-abs(speed))
         else:
-            self.set_speed(-abs(self.robot_config["parameters"]["default_speed"]))
+            self.set_speed(-abs(int(self.robot_config["parameters"]["default_speed"])))
             
         if self.robot_body["right_motor"] != False and self.robot_body["left_motor"] != False :
             self.robot_body["right_motor"].run_forever()
@@ -199,7 +199,7 @@ class Robot:
         if speed:
             self.set_speed(abs(speed))
         else:
-            self.set_speed(abs(self.robot_config["parameters"]["default_speed"]))
+            self.set_speed(abs(int(self.robot_config["parameters"]["default_speed"])))
 
         if self.robot_body["right_motor"] != False and self.robot_body["left_motor"] != False :
             self.robot_body["right_motor"].run_forever()
@@ -241,7 +241,7 @@ class Robot:
 
         logging.debug("Turning !!")
 
-        self.set_speed(self.robot_config["parameters"]["default_speed"])
+        self.set_speed(int(self.robot_config["parameters"]["default_speed"]))
 
         self.robot_body["right_motor"].speed_sp *= right_or_left
         self.robot_body["left_motor"].speed_sp *= -right_or_left
@@ -315,7 +315,7 @@ class Robot:
                 self.brake()
                 
             if self.robot_body["US_sensor"] != False :
-                if self.robot_body["US_sensor"].value() < self.robot_config["parameters"]["default_threshold_distance"]:
+                if self.robot_body["US_sensor"].value() < int(self.robot_config["parameters"]["default_threshold_distance"]):
                     logging.debug('object found: %s' % str(self.robot_body["US_sensor"].value()))
                     self.brake()
 
