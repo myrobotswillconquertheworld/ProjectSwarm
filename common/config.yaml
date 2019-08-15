@@ -3,54 +3,54 @@
 # Clio parameters
 Clio :
     motors:
-        A: LargeMotor, 
-        B: LargeMotor, 
-        C: MediumMotor, 
-        D: False 
+        A: LargeMotor
+        B: LargeMotor
+        C: MediumMotor
+        D: False
     sensors:
-        S1: DIST-Nx-v3,
-        S2: Gyro, 
-        S3: Sound, 
-        S4: Touch 
+        S1: DIST-Nx-v3
+        S2: Gyro
+        S3: Sound
+        S4: Touch
     dimensions:
-        wheel_diameter: 200, 
-        wheel_spacing: 250 
+        wheel_diameter: 200
+        wheel_spacing: 250
     parameters:
-        default_speed: 400,
-        threshold_distance: 100 
+        default_speed: 400
+        threshold_distance: 100
 # Erato parameters
 Erato :
     motors:
-        A: LargeMotor, 
-        B: LargeMotor, 
-        C: MediumMotor, 
-        D: False 
+        A: LargeMotor
+        B: LargeMotor
+        C: MediumMotor
+        D: False
     sensors:
-        S1: IRSensor,
-        S2: Compass,
-        S3: Sound, 
-        S4: Touch,
+        S1: IRSensor
+        S2: Compass
+        S3: Sound
+        S4: Touch
     dimensions:
-        wheel_diameter: 200, 
-        wheel_spacing: 250 
+        wheel_diameter: 200
+        wheel_spacing: 250
     parameters:
-        default_speed: 400,
-        threshold_distance: 100 
+        default_speed: 400
+        threshold_distance: 100
 # Calliope parameters
 Calliope :
     motors:
-        A: LargeMotor, 
-        B: LargeMotor, 
-        C: MediumMotor, 
-        D: False 
+        A: LargeMotor
+        B: LargeMotor
+        C: MediumMotor
+        D: False
     sensors:
-        S1: IRSensor,
-        S2: Color, 
-        S3: Sound, 
-        S4: Touch,
+        S1: IRSensor
+        S2: Color
+        S3: Sound
+        S4: Touch
     dimensions:
-        wheel_diameter: 200, 
-        wheel_spacing: 250 
+        wheel_diameter: 200
+        wheel_spacing: 250
     parameters:
-        default_speed: 400,
-        threshold_distance: 100 
+        default_speed: 400
+        threshold_distance: 100
