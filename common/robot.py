@@ -60,7 +60,7 @@ class Robot:
         
         # loading config form config.yaml file
         self.load_config()
-        logging.info(">>> Config loaded for: %s" % self.robot_name % "<<<")
+        logging.info(">>> Config loaded for:" + str(self.robot_name) + "<<<")
             
         self.setup_motors()
         logging.info(">>> Motors config done <<<")
