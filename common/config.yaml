@@ -8,10 +8,10 @@ Clio :
         C: MediumMotor
         D: False
     sensors:
-        S1: DIST-Nx-v3
-        S2: Gyro
-        S3: Sound
-        S4: Touch
+        in1: DIST-Nx-v3
+        in2: Gyro
+        in3: Sound
+        in4: Touch
     dimensions:
         wheel_diameter: 200
         wheel_spacing: 250
@@ -26,10 +26,10 @@ Erato :
         C: MediumMotor
         D: False
     sensors:
-        S1: IRSensor
-        S2: Compass
-        S3: Sound
-        S4: Touch
+        in1: IRSensor
+        in2: Compass
+        in3: Sound
+        in4: Touch
     dimensions:
         wheel_diameter: 200
         wheel_spacing: 250
@@ -44,10 +44,10 @@ Calliope :
         C: MediumMotor
         D: False
     sensors:
-        S1: IRSensor
-        S2: Color
-        S3: Sound
-        S4: Touch
+        in1: IRSensor
+        in2: Color
+        in3: Sound
+        in4: Touch
     dimensions:
         wheel_diameter: 200
         wheel_spacing: 250

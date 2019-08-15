@@ -76,55 +76,55 @@ class Robot:
         """During startup setup all sensors of the robot based on the given config.yaml"""
         
         #if self.robot_body().has_key("")
-        
-        
-        # Setting up sensors
-        try:
-            self.robot_body["touch_sensor"] = TouchSensor()
-            logging.info("Touch sensor connected: %s" % str(self.robot_body["touch_sensor"].address))
-            #self.robot_body["touch_sensor"].mode = 
-        except:
-            self.robot_body["touch_sensor"] = False
-            logging.exception("Touch sensor not connected")
-        try:
-            self.robot_body["sound_sensor"] = SoundSensor()
-            logging.info("Sound sensor connected: %s" % str(self.robot_body["sound_sensor"].address))
-            #self.robot_body["sound_sensor"].mode =
-        except:
-            self.robot_body["sound_sensor"] = False
-            logging.exception("Sound sensor not connected")
-            
-        try:
-            self.robot_body["gyro_sensor"] = GyroSensor()
-            logging.info("Gyro sensor connected: %s" % str(self.robot_body["gyro_sensor"].address))
-            self.robot_body["gyro_sensor"].mode = 'GYRO-ANG'
-        except:
-            self.robot_body["gyro_sensor"] = False
-            logging.exception("Gyro sensor not connected")
-
-        try:
-            self.robot_body["color_sensor"] = ColorSensor()
-            logging.info("Color sensor connected: %s" % str(self.robot_body["color_sensor"].address))
-            self.robot_body["color_sensor"].mode = 'COL-REFLECT'
-        except:
-            self.robot_body["color_sensor"] = False
-            logging.exception("Color sensor not connected")
-
-        try:
-            self.robot_body["US_sensor"] = UltrasonicSensor()
-            logging.info("Ultrasonic sensor connected: %s" % str(self.robot_body["US_sensor"].address))
-            self.robot_body["US_sensor"].mode = 'US-DIST-CM'
-        except:
-            self.robot_body["US_sensor"] = False
-            logging.exception("Ultrasonic sensor not connected")
-
-        try:
-            self.robot_body["IR_sensor"] = InfraredSensor()
-            logging.info("IR sensor connected: %s" % str(self.robot_body["IR_sensor"].address))
-            self.robot_body["IR_sensor"].mode = 'IR-REMOTE'
-        except:
-            self.robot_body["IR_sensor"] = False
-            logging.exception("IR sensor not connected")
+        for inx, sensor in self.robot_config["sensors"].items()
+            if sensor == "touch_sensor":
+               try:
+                    self.robot_body["touch_sensor"] = TouchSensor()
+                    logging.info("Touch sensor connected: %s" % str(self.robot_body["touch_sensor"].address)) 
+                except:
+                    self.robot_body["touch_sensor"] = False
+                    logging.exception("Touch sensor not connected")str(self.robot_body["touch_sensor"].address))
+            elif sensor == "sound_sensor":
+                try:
+                    self.robot_body["sound_sensor"] = SoundSensor()
+                    logging.info("Sound sensor connected: %s" % str(self.robot_body["sound_sensor"].address))
+                except:
+                    self.robot_body["sound_sensor"] = False
+                    logging.exception("Sound sensor not connected")
+            elif sensor == "gyro_sensor":
+                try:
+                    self.robot_body["gyro_sensor"] = GyroSensor()
+                    logging.info("Gyro sensor connected: %s" % str(self.robot_body["gyro_sensor"].address))
+                    self.robot_body["gyro_sensor"].mode = 'GYRO-ANG'
+                except:
+                    self.robot_body["gyro_sensor"] = False
+                    logging.exception("Gyro sensor not connected")
+            elif sensor == "color_sensor":
+                try:
+                    self.robot_body["color_sensor"] = ColorSensor()
+                    logging.info("Color sensor connected: %s" % str(self.robot_body["color_sensor"].address))
+                    self.robot_body["color_sensor"].mode = 'COL-REFLECT'
+                except:
+                    self.robot_body["color_sensor"] = False
+                    logging.exception("Color sensor not connected")
+            elif sensor == "US_sensor":
+                try:
+                    self.robot_body["US_sensor"] = UltrasonicSensor()
+                    logging.info("Ultrasonic sensor connected: %s" % str(self.robot_body["US_sensor"].address))
+                    self.robot_body["US_sensor"].mode = 'US-DIST-CM'
+                except:
+                    self.robot_body["US_sensor"] = False
+                    logging.exception("Ultrasonic sensor not connected")
+            elif sensor == "IR_sensor":
+                try:
+                    self.robot_body["IR_sensor"] = InfraredSensor()
+                    logging.info("IR sensor connected: %s" % str(self.robot_body["IR_sensor"].address))
+                    self.robot_body["IR_sensor"].mode = 'IR-REMOTE'
+                except:
+                    self.robot_body["IR_sensor"] = False
+                    logging.exception("IR sensor not connected")
+            else:
+                logging.error("Unknown sensor / not supported on input" + str(inx))
         
         return True
         
