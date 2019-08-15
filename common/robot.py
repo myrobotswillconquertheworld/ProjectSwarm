@@ -83,7 +83,8 @@ class Robot:
                     logging.info("Touch sensor connected:" + str(self.robot_body["touch_sensor"].address)) 
                 except:
                     self.robot_body["touch_sensor"] = False
-                    logging.exception("Touch sensor not connected")str(self.robot_body["touch_sensor"].address))
+                    logging.exception("Touch sensor not connected")
+                    
             elif sensor == "sound_sensor":
                 try:
                     self.robot_body["sound_sensor"] = SoundSensor()
@@ -91,6 +92,7 @@ class Robot:
                 except:
                     self.robot_body["sound_sensor"] = False
                     logging.exception("Sound sensor not connected")
+                    
             elif sensor == "gyro_sensor":
                 try:
                     self.robot_body["gyro_sensor"] = GyroSensor()
@@ -99,6 +101,7 @@ class Robot:
                 except:
                     self.robot_body["gyro_sensor"] = False
                     logging.exception("Gyro sensor not connected")
+                    
             elif sensor == "color_sensor":
                 try:
                     self.robot_body["color_sensor"] = ColorSensor()
@@ -107,6 +110,7 @@ class Robot:
                 except:
                     self.robot_body["color_sensor"] = False
                     logging.exception("Color sensor not connected")
+                    
             elif sensor == "US_sensor":
                 try:
                     self.robot_body["US_sensor"] = UltrasonicSensor()
@@ -115,6 +119,7 @@ class Robot:
                 except:
                     self.robot_body["US_sensor"] = False
                     logging.exception("Ultrasonic sensor not connected")
+                    
             elif sensor == "IR_sensor":
                 try:
                     self.robot_body["IR_sensor"] = InfraredSensor()
@@ -123,6 +128,7 @@ class Robot:
                 except:
                     self.robot_body["IR_sensor"] = False
                     logging.exception("IR sensor not connected")
+                    
             else:
                 logging.error("Unknown sensor / not supported on input" + str(inx))
         
