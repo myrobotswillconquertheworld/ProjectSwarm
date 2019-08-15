@@ -301,7 +301,7 @@ class Robot:
         
         while True:
             time.sleep(self.DEFAULT_SLEEP_TIMEOUT_IN_SEC)
-            ir_value = self.ir_sensor.value()
+            ir_value = self.robot_body["IR_sensor"].value()
 
             if ir_value == 0:
                 self.brake()
