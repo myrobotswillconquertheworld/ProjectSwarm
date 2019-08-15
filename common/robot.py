@@ -76,7 +76,7 @@ class Robot:
         """During startup setup all sensors of the robot based on the given config.yaml"""
         
         #if self.robot_body().has_key("")
-        for inx, sensor in self.robot_config["sensors"].items()
+        for inx, sensor in self.robot_config["sensors"].items():
             if sensor == "touch_sensor":
                try:
                     self.robot_body["touch_sensor"] = TouchSensor()
