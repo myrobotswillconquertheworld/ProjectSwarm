@@ -9,12 +9,8 @@ import socket
 
 class Robot:
 
-    # Default robot speed
-    DEFAULT_SPEED = 400
     # default sleep timeout in sec
     DEFAULT_SLEEP_TIMEOUT_IN_SEC = 0.1
-    # default threshold distance
-    DEFAULT_THRESHOLD_DISTANCE = 150
     
     # main default empty config. Sizes are in milimeters (mm). Config will load from config.yaml
     robot_name = socket.gethostname()
@@ -80,7 +76,7 @@ class Robot:
         """During startup setup all sensors of the robot based on the given config.yaml"""
         
         #if self.robot_body().has_key("")
-        #list(mydict.keys())[list(mydict.values()).index(1)]
+        
         
         # Setting up sensors
         try:
@@ -182,7 +178,7 @@ class Robot:
         if speed:
             self.set_speed(-abs(speed))
         else:
-            self.set_speed(-abs(self.robot_body["parameters"]["default_speed"]))
+            self.set_speed(-abs(self.robot_config["parameters"]["default_speed"]))
             
         if self.robot_body["right_motor"] != False and self.robot_body["left_motor"] != False :
             self.robot_body["right_motor"].run_forever()
@@ -203,7 +199,7 @@ class Robot:
         if speed:
             self.set_speed(abs(speed))
         else:
-            self.set_speed(abs(self.robot_body["parameters"]["default_speed"]))
+            self.set_speed(abs(self.robot_config["parameters"]["default_speed"]))
 
         if self.robot_body["right_motor"] != False and self.robot_body["left_motor"] != False :
             self.robot_body["right_motor"].run_forever()
@@ -232,7 +228,7 @@ class Robot:
             right_or_left=1 turn right if positive, left if negative
             
         Returns :
-            False if one wheel motor is missin
+            False if one wheel motor is missing
             True otherwise
         
         To do :
@@ -245,7 +241,7 @@ class Robot:
 
         logging.debug("Turning !!")
 
-        self.set_speed(self.robot_body["parameters"]["default_speed"])
+        self.set_speed(self.robot_config["parameters"]["default_speed"])
 
         self.robot_body["right_motor"].speed_sp *= right_or_left
         self.robot_body["left_motor"].speed_sp *= -right_or_left
@@ -281,7 +277,7 @@ class Robot:
     def ir_remote_control(self):
         """
         Handles IR remote control inputs and moves the robot accordingly. 
-        Stops robot if ultrasonic sensor gets a value below DEFAULT_THRESHOLD_DISTANCE.
+        Stops robot if ultrasonic sensor gets a value below default_threshold_distance (parameter from config).
         IR values :
         * 0 -> brake
         * 1 -> forward
@@ -319,7 +315,7 @@ class Robot:
                 self.brake()
                 
             if self.robot_body["US_sensor"] != False :
-                if self.robot_body["US_sensor"].value() < self.DEFAULT_THRESHOLD_DISTANCE:
+                if self.robot_body["US_sensor"].value() < self.robot_config["parameters"]["default_threshold_distance"]:
                     logging.debug('object found: %s' % str(self.robot_body["US_sensor"].value()))
                     self.brake()
 

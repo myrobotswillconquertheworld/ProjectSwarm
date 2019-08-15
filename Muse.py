@@ -9,12 +9,9 @@ from common.robot import Robot
 # config logging
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
-# default threshold distance
-DEFAULT_THRESHOLD_DISTANCE = 150
-
 def main():
 
-    logging.debug('Starting Muse : Run robot, run!')
+    logging.debug('>>> Starting Muse : Run robot, run! <<<')
     robot = Robot()
 
     try:
@@ -37,7 +34,7 @@ def main():
             if k == 'i':
                 robot.ir_remote_control()
             if robot.robot_body["US_sensor"] != False :
-                if robot.robot_body["US_sensor"].value() < DEFAULT_THRESHOLD_DISTANCE:
+                if robot.robot_body["US_sensor"].value() < robot.robot_config["parameters"]["default_threshold_distance"]:
                     logging.debug('object found: %s' % str(robot.robot_body["US_sensor"].value()))
                     robot.brake()
             if k == 'q':
