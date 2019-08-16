@@ -6,6 +6,7 @@ import logging
 import time
 import yaml
 import socket
+import Sound
 
 class Robot:
 
@@ -63,6 +64,10 @@ class Robot:
             
         self.setup_sensors()
         logging.info(">>> Sensors setup done <<<")
+        
+    def beep()
+        Sound.beep()
+        return True
             
     def load_config(self):
         """Read config file and load it in class"""
