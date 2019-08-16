@@ -67,7 +67,7 @@ class Robot:
         self.setup_sensors()
         logging.info(">>> Sensors setup done <<<")
         
-        if self.check_power() < 7:
+        if int(self.check_power()) < 7:
             logging.critical("BATTERY LOW : PLUG ME !!!")
         
     def beep(self):
