@@ -70,11 +70,11 @@ class Robot:
         if self.check_power() < 7:
             logging.critical("BATTERY LOW : PLUG ME !!!")
         
-    def beep():
+    def beep(self):
         Sound.beep()
         return True
     
-    def check_power():
+    def check_power(self):
         """ Logs voltage and current, and update the class battery_voltage """
         logging.info("Voltage is : " + str(PowerSupply.measured_voltage))
         logginf.info("Current is : " + str(PowerSupply.measured_current))
