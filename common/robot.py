@@ -67,7 +67,8 @@ class Robot:
         self.setup_sensors()
         logging.info(">>> Sensors setup done <<<")
         
-        self.check_power()
+        if self.check_power() < 7:
+            logging.critical("CHARGE ME")
         
     def beep(self):
         Sound.beep()
@@ -75,10 +76,10 @@ class Robot:
     
     def check_power(self):
         """ Logs voltage and current, and update the class battery_voltage """
-        robot_body["power_supply"] = PowerSupply()
-        logging.info("Voltage is : " + str(robot_body["power_supply"].measured_voltage))
-        logging.info("Current is : " + str(robot_body["power_supply"].measured_current))
-        return robot_body["power_supply"].measured_voltage
+        self.robot_body["power_supply"] = PowerSupply()
+        logging.info("Voltage is : " + str(self.robot_body["power_supply"].measured_voltage))
+        logging.info("Current is : " + str(self.robot_body["power_supply"].measured_current))
+        return self.robot_body["power_supply"].measured_voltage
             
     def load_config(self):
         """Read config file and load it in class"""
