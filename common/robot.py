@@ -7,7 +7,7 @@ import time
 import yaml
 import socket
 from ev3dev2.sound import Sound
-from ev3dev2.powersupply import PowerSupply
+from ev3dev2.power import PowerSupply
 
 class Robot:
 
