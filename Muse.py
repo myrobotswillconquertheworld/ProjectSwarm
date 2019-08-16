@@ -16,7 +16,7 @@ def main():
 
     try:
         loop = True
-        logging.debug("listening to keyboard input e:forward ; d:back ; f:right ; s:left ; space:stop ; i:ir_remote ; "b: beep)
+        logging.debug("listening to keyboard input e:forward ; d:back ; f:right ; s:left ; space:stop ; i:ir_remote ; b: beep")
         while loop:
 
             k = getch()
