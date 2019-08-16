@@ -77,7 +77,7 @@ class Robot:
     def check_power(self):
         """ Logs voltage and current, and update the class battery_voltage """
         logging.info("Voltage is : " + str(PowerSupply.measured_voltage))
-        logginf.info("Current is : " + str(PowerSupply.measured_current))
+        logging.info("Current is : " + str(PowerSupply.measured_current))
         self.battery_voltage = PowerSupply.measured_voltage
         return PowerSupply.measured_voltage
             
