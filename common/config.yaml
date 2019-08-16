@@ -26,7 +26,7 @@ Erato :
         C: MediumMotor
         D: False
     sensors:
-        in1: US_Sensor
+        in1: US_sensor
         in2: Compass_sensor
         in3: Sound_sensor
         in4: Touch_sensor
@@ -44,7 +44,7 @@ Calliope :
         C: MediumMotor
         D: False
     sensors:
-        in1: IR_Sensor
+        in1: IR_sensor
         in2: Color_sensor
         in3: Sound_sensor
         in4: Touch_sensor
