@@ -71,7 +71,8 @@ class Robot:
             logging.critical("CHARGE ME")
         
     def beep(self):
-        Sound.beep()
+        bleep = Sound()
+        bleep.beep()
         return True
     
     def check_power(self):
