@@ -16,7 +16,7 @@ def main():
 
     try:
         loop = True
-        logging.debug("listening to keyboard input e:forward ; d:back ; f:right ; s:left ; space:stop ; i:ir_remote ; b: beep")
+        logging.debug("listening to keyboard input e:forward ; d:back ; f:right ; s:left ; space:stop ; i:ir_remote ; b: beep ; v: Current voltage")
         while loop:
 
             k = getch()
@@ -35,6 +35,8 @@ def main():
                 robot.ir_remote_control()
             if k == 'b':
                 robot.beep()
+            if k == 'v':
+                robot.check_power()
             if robot.robot_body["US_sensor"] != False :
                 if robot.robot_body["US_sensor"].value() < int(robot.robot_config["parameters"]["default_threshold_distance"]):
                     logging.debug('object found: %s' % str(robot.robot_body["US_sensor"].value()))

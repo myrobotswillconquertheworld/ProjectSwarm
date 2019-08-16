@@ -6,12 +6,14 @@ import logging
 import time
 import yaml
 import socket
-import ev3dev2.Sound
+from ev3dev2.sound import Sound
+from ev3dev2.powersupply import PowerSupply
 
 class Robot:
 
     # default sleep timeout in sec
     DEFAULT_SLEEP_TIMEOUT_IN_SEC = 0.1
+    battery_voltage = 0
     
     # main default empty config. Sizes are in milimeters (mm). Config will load from config.yaml
     robot_name = socket.gethostname()
@@ -65,9 +67,19 @@ class Robot:
         self.setup_sensors()
         logging.info(">>> Sensors setup done <<<")
         
+        if self.check_power() < 7:
+        logging.critical("BATTERY LOW : PLUG ME !!!")
+        
     def beep():
         Sound.beep()
         return True
+    
+    def check_power():
+        """ Logs voltage and current, and update the class battery_voltage """
+        logging.info("Voltage is : " + str(PowerSupply.measured_voltage))
+        logginf.info("Current is : " + str(PowerSupply.measured_current))
+        self.battery_voltage = PowerSupply.measured_voltage
+        return PowerSupply.measured_voltage
             
     def load_config(self):
         """Read config file and load it in class"""
