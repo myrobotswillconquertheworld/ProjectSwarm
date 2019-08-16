@@ -13,7 +13,6 @@ class Robot:
 
     # default sleep timeout in sec
     DEFAULT_SLEEP_TIMEOUT_IN_SEC = 0.1
-    battery_voltage = 0
     
     # main default empty config. Sizes are in milimeters (mm). Config will load from config.yaml
     robot_name = socket.gethostname()
@@ -29,6 +28,7 @@ class Robot:
                     "left_motor" : False,
                     "turret_rotation" : False,
                     "turret_elevation" : False,
+                    "power_supply" : False,
                     "touch_sensor" : False,
                     "sound_sensor" : False,
                     "color_sensor" :False,
@@ -75,10 +75,10 @@ class Robot:
     
     def check_power(self):
         """ Logs voltage and current, and update the class battery_voltage """
-        logging.info("Voltage is : " + str(PowerSupply.measured_voltage))
-        logging.info("Current is : " + str(PowerSupply.measured_current))
-        self.battery_voltage = PowerSupply.measured_voltage
-        return PowerSupply.measured_voltage
+        robot_body["power_supply"] = PowerSupply()
+        logging.info("Voltage is : " + str(robot_body["power_supply"].measured_voltage))
+        logging.info("Current is : " + str(robot_body["power_supply"].measured_current))
+        return robot_body["power_supply"].measured_voltage
             
     def load_config(self):
         """Read config file and load it in class"""
