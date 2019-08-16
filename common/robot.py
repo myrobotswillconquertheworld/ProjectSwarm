@@ -6,7 +6,7 @@ import logging
 import time
 import yaml
 import socket
-import Sound
+import ev3dev2.Sound
 
 class Robot:
 
