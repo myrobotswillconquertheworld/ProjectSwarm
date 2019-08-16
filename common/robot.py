@@ -65,7 +65,7 @@ class Robot:
         self.setup_sensors()
         logging.info(">>> Sensors setup done <<<")
         
-    def beep()
+    def beep():
         Sound.beep()
         return True
             
